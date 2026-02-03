@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
+    <link rel="stylesheet" type="text/css" href="public/styles/login.css">
+    <title>Login</title>
+</head>
+<body>
+    <form method="POST" action="\register">
+    <h1>Register</h1>
+
+    <?php if (isset($messages)): ?>
+        <p class="messages">
+            <?= $messages ?>
+        </p>    
+
+    <?php endif; ?>
+    <input name="username" type="text" placeholder="Username" >
+    <input name="password" type="password" placeholder="Password" >
+    <input name="password2" type="password" placeholder="Again Password" >
+    
+    <input name="firstname" type="text" placeholder="Name" >
+    <input name="lastname" type="text" placeholder="Last Name" >
+    <button type="submit">Register</button>
+    </form>
+</body>
+</html>
