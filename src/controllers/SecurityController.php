@@ -33,9 +33,16 @@ class SecurityController extends AppController {
         }
 
         // TODO create user session, cookie itd.
+        $_SESSION['user'] = [
+        'id' => $user['id'],
+        'firstname' => $user['firstname'],
+        'email' => $user['email'],
+        'role' => $user['role'] ?? 'USER'
+    ];
 
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/dashboard");
+        exit;
     }
 
     public function register(){

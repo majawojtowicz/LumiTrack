@@ -3,36 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
-    <link rel="stylesheet" type="text/css" href="public/styles/dashboard.css">
-    <script src="public/scripts/main.js" defer></script>
-    <title>Dashboard</title>
+    <link rel="stylesheet" href="public/styles/main.css">
+    <link rel="stylesheet" href="/public/styles/dashboard.css">
+    <script src="/public/scripts/dashboard.js" defer></script>
+    <title>LumiTrack – Dashboard</title>
 </head>
 <body>
-    <nav>
-        <p>logo</p>
-        <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>Contact</li>
-        </ul>
-    </nav>
-    
-    <div class="container">
-        <aside>
-            <p>Tool 1</p>
-        </aside>
-        <main>
-            <h1>Dashboard</h1>
-            <ul>
-                <?php foreach($cards as $key=>$value): ?>
-                    <li>
-                        <?php echo $value['title']; ?>
-                        <img src="<?= $value['imageUrlPath']; ?>">
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </main>
+
+<nav class="topbar">
+    <div class="logo">
+        <div class="logo-icon">L</div>
+        <span>LumiTrack</span>
     </div>
+
+    <ul class="nav-links">
+        <li class="active">Dashboard</li>
+        <li>History</li>
+        <li>Statistics</li>
+        <li>Profile</li>
+        <?php if (($user['role'] ?? '') === 'ADMIN'): ?>
+            <li>Admin</li>
+        <?php endif; ?>
+    </ul>
+</nav>
+
+
+<div class="container">
+
+    
+    <aside></aside>
+
+    <main class="dashboard">
+        <div class="dashboard-container">
+
+            <header class="welcome">
+                <h1>
+                    Welcome back, <?= htmlspecialchars($user['firstname'] ?? 'User') ?> 👋
+                </h1>
+                <p>Log your energy, mood and focus for today.</p>
+            </header>
+
+            <section class="card">
+                <form method="POST" action="/save-entry">
+
+                    <input type="hidden" name="mood" id="moodInput" value="2">
+                    <input type="hidden" name="focus" id="focusInput" value="2">
+
+                    <div class="section">
+                        <label>⚡ Energy level</label>
+                        <input type="range" name="energy" min="1" max="5" value="3">
+                        <div class="range-labels">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <label>😊 Mood</label>
+                        <div class="options">
+                            <button type="button" class="option mood">😞 Sad</button>
+                            <button type="button" class="option mood active">😐 Neutral</button>
+                            <button type="button" class="option mood">😊 Happy</button>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <label>🎯 Focus</label>
+                        <div class="options">
+                            <button type="button" class="option focus">Low</button>
+                            <button type="button" class="option focus active">Normal</button>
+                            <button type="button" class="option focus">Deep</button>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <label>📝 Note (optional)</label>
+                        <textarea name="note" placeholder="Any thoughts about today?"></textarea>
+                    </div>
+
+                    <button class="save-btn">Save entry</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+</div>
+
 </body>
 </html>

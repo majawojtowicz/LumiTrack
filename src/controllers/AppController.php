@@ -1,6 +1,6 @@
 <?php
 
-
+session_start();
 class AppController {
     protected function isGet(): bool
         {
@@ -15,7 +15,6 @@ class AppController {
     {
         $templatePath = 'public/views/'. $template.'.html';
         $templatePath404 = 'public/views/404.html';
-        $output = "";
                  
         if(file_exists($templatePath)){
             // ["message" => "Błędne hasło!"]
@@ -25,13 +24,12 @@ class AppController {
             
             ob_start();
             include $templatePath;
-            $output = ob_get_clean();
+            return ob_get_clean();
         } else {
             ob_start();
             include $templatePath404;
-            $output = ob_get_clean();
+            return ob_get_clean();
         }
-        echo $output;
     }
 
 }
