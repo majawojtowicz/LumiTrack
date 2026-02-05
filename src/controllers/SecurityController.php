@@ -28,7 +28,7 @@ class SecurityController extends AppController {
             return $this->render("login", ["messages" => ["Nie istnieje taki użytkownik!"]]);
         }
 
-        if(!password_verify($password, $user['hashedpassword'])){
+        if(!password_verify($password, $user['password'])){
             return $this->render("login", ["messages" => ["Nieprawidłowy email lub hasło!"]]);
         }
 
@@ -40,7 +40,7 @@ class SecurityController extends AppController {
 
     public function register(){
 
-        if(!$this->isGet()){
+        if(!$this->isPost()){
             return $this->render("register");
         }
 

@@ -1,7 +1,7 @@
 <?php
 
-
-const USERNAME = 'docker';
-const PASSWORD = 'docker';
+const USERNAME = 'lumitrack';
+const PASSWORD = 'lumitrack';
 const HOST = 'db';
-const DATABASE = 'db';
+const DATABASE = 'lumitrack';
+

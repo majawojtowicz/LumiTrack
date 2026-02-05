@@ -14,14 +14,7 @@ services:
     networks:
       - pg-network
   
-  db:
-    build:
-      context: .
-      dockerfile: docker/db/Dockerfile
-    ports:
-      - "5433:5432"
-    networks:
-      - pg-network
+
   
   php:
     build:
@@ -32,6 +25,18 @@ services:
     networks:
       - pg-network
   
+  db:
+    image: postgres:15
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: lumitrack
+      POSTGRES_USER: lumitrack
+      POSTGRES_PASSWORD: lumitrack
+    volumes:
+      - ./docker/db:/docker-entrypoint-initdb.d
+    networks:
+      - pg-network
   pgadmin-wdpai:
     image: dpage/pgadmin4:latest
     container_name: pg-admin2

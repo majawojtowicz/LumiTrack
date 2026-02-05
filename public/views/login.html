@@ -3,25 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
-    <link rel="stylesheet" type="text/css" href="public/styles/login.css">
-    <title>Login</title>
+    <link rel="stylesheet" href="/public/styles/main.css">
+    <link rel="stylesheet" href="/public/styles/login.css">
+
+    <title>LumiTrack – Login</title>
 </head>
 <body>
-    <form method="POST" action="\login">
-    <h1>Login</h1>
 
-    <?php if (isset($messages)): ?>
-        <p class="messages">
-            <?= $messages ?>
-        </p>    
+<div class="page">
+    <form method="POST" action="/login" class="card">
 
-    <?php endif; ?>
-    <input name="username" type="text" placeholder="Username" >
-    <input name="password" type="password" placeholder="Password" >
-    <button type="submit">Login</button>
+        <div class="logo">
+            <div class="logo-icon">L</div>
+            <h1>LumiTrack</h1>
+            <p class="subtitle">Track your energy, mood, and focus</p>
+        </div>
 
-    <a href="/register">Register here</a>
+        <?php if (isset($messages) && is_array($messages)): ?>
+    <div class="messages">
+        <?php foreach ($messages as $message): ?>
+            <p><?= htmlspecialchars($message) ?></p>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+
+        <label>Email</label>
+        <input name="username" type="text" placeholder="you@example.com" required>
+
+        <label>Password</label>
+        <input name="password" type="password" placeholder="••••••••" required>
+
+        <button type="submit">Login</button>
+
+        <p class="register">
+            Don’t have an account?
+            <a href="/register">Register here</a>
+        </p>
+
+
     </form>
+</div>
+
 </body>
 </html>

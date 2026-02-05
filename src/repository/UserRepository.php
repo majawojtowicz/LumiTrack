@@ -32,14 +32,14 @@ class UserRepository extends Repository{
        return $users;
     }
 
-    public function createUser(string $firstname, string $email, string $hashedpassword, string $lastname, string $bio=''): void {
+    public function createUser(string $firstname, string $email, string $password, string $lastname): void {
         $query = $this->database->connect()->prepare('
-            INSERT INTO users (firstname, email, hashedpassword, lastname, bio) 
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO users (firstname, email, password, lastname) 
+            VALUES (?, ?, ?, ?)
         ');
 
 
-        $query->execute([$firstname, $email, $hashedpassword, $lastname, $bio]);
+        $query->execute([$firstname, $email, $password, $lastname]);
 
     }
     

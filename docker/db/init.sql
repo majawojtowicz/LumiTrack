@@ -1,20 +1,19 @@
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-    email VARCHAR(150) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    bio TEXT,
-    enabled BOOLEAN DEFAULT TRUE
+    firstname VARCHAR(100),
+    lastname VARCHAR(100),
+    role VARCHAR(50) DEFAULT 'USER',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (firstname, lastname, email, password, bio, enabled)
+INSERT INTO users (email, password, firstname, lastname, role)
 VALUES (
-    'Jan',
-    'Kowalski',
-    'jan.kowalski@example.com',
-    '$2b$10$ZbzQrqD1vDhLJpYe/vzSbeDJHTUnVPCpwlXclkiFa8dO5gOAfg8tq',
-    'Lubi programować w JS i PL/SQL.',
-    TRUE
+    'admin@lumitrack.com',
+    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    'Admin',
+    'User',
+    'ADMIN'
 );
- 
