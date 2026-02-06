@@ -17,14 +17,24 @@
     </div>
 
     <ul class="nav-links">
-        <li class="active">Dashboard</li>
-        <li>History</li>
-        <li>Statistics</li>
-        <li>Profile</li>
-        <?php if (($user['role'] ?? '') === 'ADMIN'): ?>
-            <li>Admin</li>
-        <?php endif; ?>
-    </ul>
+    <li class="<?= $page === 'dashboard' ? 'active' : '' ?>">
+        <a href="/dashboard">Dashboard</a>
+    </li>
+    <li class="<?= $page === 'history' ? 'active' : '' ?>">
+        <a href="/history">History</a>
+    </li>
+    <li class="<?= $page === 'statistics' ? 'active' : '' ?>">
+        <a href="/statistics">Statistics</a>
+    </li>
+    <li class="<?= $page === 'profile' ? 'active' : '' ?>">
+        <a href="/profile">Profile</a>
+    </li>
+    <?php if (($user['role'] ?? '') === 'ADMIN'): ?>
+        <li class="<?= $page === 'admin' ? 'active' : '' ?>">
+            <a href="/admin">Admin</a>
+        </li>
+    <?php endif; ?>
+</ul>
 </nav>
 
 
@@ -51,7 +61,7 @@
 
                     <div class="section">
                         <label>⚡ Energy level</label>
-                        <input type="range" name="energy" min="1" max="5" value="3">
+                        <input type="range" name="energy" id="energy" min="1" max="5" value="3">
                         <div class="range-labels">
                             <span>Low</span>
                             <span>High</span>
@@ -61,27 +71,27 @@
                     <div class="section">
                         <label>😊 Mood</label>
                         <div class="options">
-                            <button type="button" class="option mood">😞 Sad</button>
-                            <button type="button" class="option mood active">😐 Neutral</button>
-                            <button type="button" class="option mood">😊 Happy</button>
+                            <button type="button" class="option mood" data-value="1">😞 Sad</button>
+                            <button type="button" class="option mood active" data-value="2">😐 Neutral</button>
+                            <button type="button" class="option mood" data-value="3">😊 Happy</button>
                         </div>
                     </div>
 
                     <div class="section">
                         <label>🎯 Focus</label>
                         <div class="options">
-                            <button type="button" class="option focus">Low</button>
-                            <button type="button" class="option focus active">Normal</button>
-                            <button type="button" class="option focus">Deep</button>
+                            <button type="button" class="option focus" data-value="1">Low</button>
+                            <button type="button" class="option focus active" data-value="2">Normal</button>
+                            <button type="button" class="option focus" data-value="3">Deep</button>
                         </div>
                     </div>
 
                     <div class="section">
                         <label>📝 Note (optional)</label>
-                        <textarea name="note" placeholder="Any thoughts about today?"></textarea>
+                        <textarea name="note" id="note" placeholder="Any thoughts about today?"></textarea>
                     </div>
 
-                    <button class="save-btn">Save entry</button>
+                    <button type="button" id="saveEntry" class="save-btn">Save entry</button>
                 </form>
             </section>
 

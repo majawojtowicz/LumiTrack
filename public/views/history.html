@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/styles/main.css">
+    <link rel="stylesheet" href="public/styles/dashboard.css"> <link rel="stylesheet" href="public/styles/history.css">    <title>LumiTrack – History</title>
+</head>
+<body>
+
+<nav class="topbar">
+    <div class="logo">
+        <div class="logo-icon">L</div>
+        <span>LumiTrack</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li class="active"><a href="/history">History</a></li>
+        <li><a href="/statistics">Statistics</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <?php if (($user['role'] ?? '') === 'ADMIN'): ?>
+            <li><a href="/admin">Admin</a></li>
+        <?php endif; ?>
+    </ul>
+</nav>
+
+<div class="container">
+    <aside></aside> <main class="dashboard"> <div class="dashboard-container">
+            <header class="welcome">
+                <h1>Your History 📅</h1>
+                <p>Review your past energy levels and reflections.</p>
+            </header>
+            <div class="filter-container">
+                <input type="text" id="historySearch" placeholder="🔍 Search in your notes or dates..." class="search-input">
+            </div>
+            <div class="filter-section">
+    <div class="mood-filters">
+        <button class="filter-btn active" data-mood="all">All</button>
+        <button class="filter-btn" data-mood="1">😞 Sad</button>
+        <button class="filter-btn" data-mood="2">😐 Neutral</button>
+        <button class="filter-btn" data-mood="3">😊 Happy</button>
+</div>
+
+            <div class="history-list">
+                <?php if (empty($entries)): ?>
+                    <section class="card empty-state" data-mood="<?= $entry['mood'] ?>">
+                        <p>No entries yet. How about adding one today?</p>
+                        <a href="/dashboard" class="save-btn" style="text-decoration:none; text-align:center; display:inline-block; width: auto; padding: 10px 20px;">Go to Dashboard</a>
+                    </section>
+                <?php else: ?>
+                    <?php foreach ($entries as $entry): ?>
+                        <section class="card entry-card" data-mood="<?= $entry['mood'] ?>">
+                            <div class="entry-header">
+                                <span class="date"><?= date('l, d M Y', strtotime($entry['created_at'])) ?></span>
+                                <span class="time"><?= date('H:i', strtotime($entry['created_at'])) ?></span>
+                                <button onclick="deleteEntry(<?= $entry['id'] ?>)" class="remove-btn">Remove</button>
+                            </div>
+
+                            <div class="stats-row">
+                                <div class="stat">
+                                    <span class="label">⚡ Energy</span>
+                                    <div class="bar-bg"><div class="bar-fill" style="width: <?= ($entry['energy']/5)*100 ?>%"></div></div>
+                                </div>
+                                <div class="stat">
+                                    <span class="label">😊 Mood</span>
+                                    <span class="val"><?= $entry['mood'] == 1 ? 'Sad' : ($entry['mood'] == 2 ? 'Neutral' : 'Happy') ?></span>
+                                </div>
+                                <div class="stat">
+                                    <span class="label">🎯 Focus</span>
+                                    <span class="val"><?= $entry['focus'] == 1 ? 'Low' : ($entry['focus'] == 2 ? 'Normal' : 'Deep') ?></span>
+                                </div>
+                            </div>
+
+                            <?php if ($entry['note']): ?>
+                                <div class="note-box">
+                                    <p><?= htmlspecialchars($entry['note']) ?></p>
+                                </div>
+                            <?php endif; ?>
+                        </section>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
+<script>
+const searchInput = document.getElementById('historySearch');
+const moodButtons = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.entry-card');
+
+let activeMood = 'all';
+
+function filterEntries() {
+    const searchText = searchInput.value.toLowerCase();
+
+    cards.forEach(card => {
+        const cardMood = card.getAttribute('data-mood');
+        const noteText = card.querySelector('.note-box') ? card.querySelector('.note-box').innerText.toLowerCase() : '';
+        const dateText = card.querySelector('.entry-header').innerText.toLowerCase();
+
+        const matchesMood = (activeMood === 'all' || cardMood === activeMood);
+        const matchesSearch = (noteText.includes(searchText) || dateText.includes(searchText));
+
+        if (matchesMood && matchesSearch) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+moodButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        moodButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeMood = btn.getAttribute('data-mood');
+        filterEntries();
+    });
+});
+
+searchInput.addEventListener('input', filterEntries);
+
+async function deleteEntry(id) {
+    if (!confirm('Are you sure you want to remove this entry?')) return;
+
+    try {
+        const response = await fetch(`/delete-entry?id=${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            const card = document.querySelector(`.entry-card[onclick*="${id}"], .entry-card:has(button[onclick*="${id}"])`);
+            if (card) {
+                card.style.transition = 'all 0.4s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(20px)';
+                
+                setTimeout(() => card.remove(), 400);
+            }
+        } else {
+            alert('Something went wrong while deleting.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+</script>
+

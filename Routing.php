@@ -2,6 +2,7 @@
 
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/HistoryController.php';
 
 class Routing {
 
@@ -21,7 +22,13 @@ class Routing {
             "save-entry" => [
                 "controller" => "DashboardController",
                 "action" => "saveEntry"
-            ]
+        ],
+        "history" => [
+            "controller" => "HistoryController",
+            "action" => "index"
+            ],
+            "delete-entry" => ["controller" => "HistoryController", "action" => "deleteEntry"]
+
     ];
 
     public static function run(string $path) {
@@ -30,6 +37,8 @@ class Routing {
             case 'login':
             case 'register':
             case 'save-entry':
+            case 'history':
+            case 'delete-entry':
                 $controller = Routing::$routes[$path]["controller"];
                 $action = Routing::$routes[$path]["action"];
 

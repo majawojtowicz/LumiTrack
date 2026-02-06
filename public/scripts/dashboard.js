@@ -10,13 +10,12 @@ function setupToggle(selector) {
 setupToggle('.mood');
 setupToggle('.focus');
 
-document.getElementById('saveEntry').addEventListener('click', async () => {
+document.getElementById('saveEntry').addEventListener('click', async (e) => {
+    e.preventDefault();
     const energy = document.getElementById('energy').value;
     const mood = document.querySelector('.mood.active').dataset.value;
     const focus = document.querySelector('.focus.active').dataset.value;
     const note = document.getElementById('note').value;
-
-    const messageBox = document.getElementById('messageBox');
 
     const response = await fetch('/save-entry', {
         method: 'POST',
@@ -25,10 +24,8 @@ document.getElementById('saveEntry').addEventListener('click', async () => {
     });
 
     if (response.ok) {
-        messageBox.innerText = 'Entry saved successfully ✔️';
-        messageBox.style.display = 'block';
+        window.location.href = '/history';
     } else {
-        messageBox.innerText = 'Error while saving entry';
-        messageBox.style.display = 'block';
+        alert('Error while saving entry');
     }
 });

@@ -17,3 +17,19 @@ VALUES (
     'User',
     'ADMIN'
 );
+
+CREATE TABLE entries (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    energy INT NOT NULL,
+    mood INT NOT NULL,
+    focus INT NOT NULL,
+    note TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_entries_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
