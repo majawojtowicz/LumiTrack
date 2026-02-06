@@ -4,7 +4,7 @@ require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/HistoryController.php';
 require_once 'src/controllers/ProfileController.php';
-
+require_once 'src/controllers/AdminController.php';
 class Routing {
 
     public static $routes = [
@@ -39,6 +39,14 @@ class Routing {
         "logout" => [
             "controller" => "ProfileController",
             "action" => "logout"
+        ],
+        "admin" => [
+            "controller" => "AdminController",
+            "action" => "index"
+        ],
+        "admin-toggle-block" => [
+            "controller" => "AdminController",
+            "action" => "toggleBlock"
         ]
     ];
 

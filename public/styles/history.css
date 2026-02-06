@@ -134,3 +134,10 @@
     background: #ff4d4d;
     color: white;
 }
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr; 
+    }
+    
+}

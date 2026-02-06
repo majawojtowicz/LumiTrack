@@ -12,6 +12,7 @@ class EntryRepository extends Repository
     }
 
     public function createEntry($userId, $energy, $mood, $focus, $note)
+    
 {
     $stmt = $this->database->connect()->prepare(
         'INSERT INTO entries (user_id, energy, mood, focus, note)

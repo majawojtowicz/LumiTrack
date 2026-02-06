@@ -19,6 +19,8 @@ class DashboardController extends AppController
 
     public function saveEntry()
 {
+
+
     if (!$this->isPost()) {
         http_response_code(405);
         echo json_encode(['error' => 'Method not allowed']);
