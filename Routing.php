@@ -3,6 +3,7 @@
 require_once 'src/controllers/SecurityController.php';
 require_once 'src/controllers/DashboardController.php';
 require_once 'src/controllers/HistoryController.php';
+require_once 'src/controllers/ProfileController.php';
 
 class Routing {
 
@@ -11,46 +12,53 @@ class Routing {
             "controller" => "SecurityController",
             "action" => "login"
         ],
-         "register" => [
+        "register" => [
             "controller" => "SecurityController",
             "action" => "register"
-         ],
-         "dashboard" => [
+        ],
+        "dashboard" => [
             "controller" => "DashboardController",
             "action" => "index"
-         ],
-            "save-entry" => [
-                "controller" => "DashboardController",
-                "action" => "saveEntry"
+        ],
+        "save-entry" => [
+            "controller" => "DashboardController",
+            "action" => "saveEntry"
         ],
         "history" => [
             "controller" => "HistoryController",
             "action" => "index"
-            ],
-            "delete-entry" => ["controller" => "HistoryController", "action" => "deleteEntry"]
-
+        ],
+        "delete-entry" => [
+            "controller" => "HistoryController",
+            "action" => "deleteEntry"
+        ],
+        "profile" => [
+            "controller" => "ProfileController",
+            "action" => "index"
+        ],
+        "logout" => [
+            "controller" => "ProfileController",
+            "action" => "logout"
+        ]
     ];
 
     public static function run(string $path) {
-        switch($path) {
-            case 'dashboard':
-            case 'login':
-            case 'register':
-            case 'save-entry':
-            case 'history':
-            case 'delete-entry':
-                $controller = Routing::$routes[$path]["controller"];
-                $action = Routing::$routes[$path]["action"];
+        $urlParts = explode("?", $path);
+        $actionName = $urlParts[0];
 
-                $controllerObj = new $controller;
-                $result= $controllerObj->$action();
-                if ($result !== null) {
-    echo $result;
-}
-                break; 
-            default:
-                include 'public/views/404.html';
-                break;
+        if (!array_key_exists($actionName, Routing::$routes)) {
+            include 'public/views/404.html';
+            return;
+        }
+
+        $controller = Routing::$routes[$actionName]["controller"];
+        $action = Routing::$routes[$actionName]["action"];
+
+        $controllerObj = new $controller;
+        $result = $controllerObj->$action();
+
+        if ($result !== null) {
+            echo $result;
         }
     }
 }

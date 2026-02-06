@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/styles/main.css">
+    <link rel="stylesheet" href="public/styles/dashboard.css">
+    <link rel="stylesheet" href="public/styles/profile.css">
+    <title>LumiTrack – Profile</title>
+</head>
+<body>
+
+<nav class="topbar">
+    <div class="logo">
+        <div class="logo-icon">L</div>
+        <span>LumiTrack</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/history">History</a></li>
+        <li><a href="/statistics">Statistics</a></li>
+        <li class="active"><a href="/profile">Profile</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <main class="dashboard">
+        <div class="dashboard-container">
+            <header class="welcome">
+                <h1>Profile</h1>
+                <p>Manage your account information</p>
+            </header>
+
+            <section class="card profile-header-card">
+                <div class="avatar-circle">
+                    <?= strtoupper(substr($user['firstname'], 0, 1)) ?>
+                </div>
+                <div class="user-meta">
+                    <h2><?= htmlspecialchars($user['firstname'] ) ?></h2>
+                    <p><?= htmlspecialchars($user['email']) ?></p>
+                </div>
+            </section>
+
+            <section class="card details-card">
+                <h3>Account Details</h3>
+                
+                <div class="detail-row">
+                    <div class="icon-box blue"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="detail-info">
+                        <span class="label">Email Address</span>
+                        <span class="value"><?= htmlspecialchars($user['email']) ?></span>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="icon-box purple"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="detail-info">
+                        <span class="label">Role</span>
+                        <span class="value"><?= htmlspecialchars($user['role'] ?? 'User') ?></span>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="icon-box green"><i class="fa-solid fa-calendar"></i></div>
+                    <div class="detail-info">
+                        <span class="label">Member Since</span>
+                        <span class="value">February 5, 2026</span> </div>
+                </div>
+            </section>
+
+            <section class="card logout-card">
+                <div class="logout-text">
+                    <h3>Sign Out</h3>
+                    <p>You can sign back in anytime with your credentials</p>
+                </div>
+                <button onclick="location.href='/logout'" class="sign-out-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                </button>
+            </section>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
