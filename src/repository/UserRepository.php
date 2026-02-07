@@ -39,21 +39,23 @@ class UserRepository extends Repository {
     }
 
     public function toggleUserBlock(int $id): bool {
-        $db = $this->database->connect();
-        
-        $stmt = $db->prepare('SELECT is_blocked FROM users WHERE id = :id');
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $currentStatus = $stmt->fetchColumn();
+        $stmt = $this->database->connect()->prepare('
+        SELECT is_blocked FROM users WHERE id = :id
+    ');
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $newStatus = $currentStatus ? 0 : 1;
+    $newStatus = $user['is_blocked'] ? 0 : 1;
 
-        $query = $db->prepare('UPDATE users SET is_blocked = :status WHERE id = :id');
-        $query->bindParam(':status', $newStatus, PDO::PARAM_INT);
-        $query->bindParam(':id', $id, PDO::PARAM_INT);
-        $query->execute();
+    $stmt = $this->database->connect()->prepare('
+        UPDATE users SET is_blocked = :status WHERE id = :id
+    ');
+    $stmt->bindParam(':status', $newStatus, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
 
-        return (bool)$newStatus;
+    return $newStatus;
     }
 
     public function registerUserWithProfile($email, $password, $firstname, $lastname) {

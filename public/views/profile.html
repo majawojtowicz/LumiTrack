@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="public/styles/dashboard.css">
     <link rel="stylesheet" href="public/styles/profile.css">
     <title>LumiTrack – Profile</title>
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -24,95 +25,100 @@
     </ul>
 </nav>
 
-<div class="container">
-    <main class="dashboard">
-        <div class="dashboard-container">
-            <header class="welcome">
-                <h1>Profile</h1>
-                <p>Manage your account information</p>
-            </header>
+<div class="profile-page-wrapper">
+    <div class="profile-container">
+        
+        <header class="welcome">
+            <h1>Profile</h1>
+            <p>Manage your account information</p>
+        </header>
 
-            <section class="card profile-header-card">
-                <div class="avatar-circle">
-                    <?= strtoupper(substr($user['firstname'], 0, 1)) ?>
-                </div>
-                <div class="user-meta">
-    <h2><?= htmlspecialchars($profile['display_name'] ?? $user['firstname']) ?></h2>
-    <p><?= htmlspecialchars($profile['bio'] ?? 'Brak opisu profilu') ?></p>
-</div>
-            </section>
-
-            <section class="card details-card">
-                <h3>Account Details</h3>
-                <section class="card profile-details-card">
-    <h3>Account Settings</h3>
-    <form action="/update-profile" method="POST">
-        <div class="detail-row">
-            <div class="icon-box blue"><i class="fa-solid fa-user-tag"></i></div>
-            <div class="detail-info" style="width: 100%;">
-                <span class="label">Display Name</span>
-                <input type="text" name="display_name" class="note-box-input" 
-                       value="<?= htmlspecialchars($profile['display_name'] ?? $user['firstname']) ?>">
+        <section class="card profile-header-card">
+            <div class="avatar-circle">
+                <?= strtoupper(substr($user['firstname'], 0, 1)) ?>
             </div>
-        </div>
-
-        <div class="detail-row">
-            <div class="icon-box purple"><i class="fa-solid fa-pen"></i></div>
-            <div class="detail-info" style="width: 100%;">
-                <span class="label">Bio</span>
-                <textarea name="bio" class="note-box-input" placeholder="Tell us something about yourself..."><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+            <div class="user-meta">
+                <h2><?= htmlspecialchars($profile['display_name'] ?? $user['firstname']) ?></h2>
+                <p><?= htmlspecialchars($profile['bio'] ?? 'Brak opisu profilu') ?></p>
             </div>
-        </div>
+        </section>
 
-        <button type="submit" class="save-btn" style="margin-top: 20px;">Save Changes</button>
-    </form>
-</section>
-                
+        <section class="card">
+            <h3>Account Settings</h3>
+            <form action="/update-profile" method="POST">
                 <div class="detail-row">
-                    <div class="icon-box blue"><i class="fa-solid fa-envelope"></i></div>
-                    <div class="detail-info">
-                        <span class="label">Email Address</span>
-                        <span class="value"><?= htmlspecialchars($user['email']) ?></span>
+                    <div class="icon-box blue"><i class="fa-solid fa-user-tag"></i></div>
+                    <div class="detail-info" style="width: 100%;">
+                        <span class="label">Display Name</span>
+                        <input type="text" name="display_name" class="note-box-input" 
+                               style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;"
+                               value="<?= htmlspecialchars($profile['display_name'] ?? $user['firstname']) ?>">
                     </div>
                 </div>
 
                 <div class="detail-row">
-                    <div class="icon-box purple"><i class="fa-solid fa-shield-halved"></i></div>
-                    <div class="detail-info">
-                        <span class="label">Role</span>
-                        <span class="value"><?= htmlspecialchars($user['role'] ?? 'User') ?></span>
+                    <div class="icon-box purple"><i class="fa-solid fa-pen"></i></div>
+                    <div class="detail-info" style="width: 100%;">
+                        <span class="label">Bio</span>
+                        <textarea name="bio" class="note-box-input" 
+                                  placeholder="Tell us something about yourself..."
+                                  style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; height: 80px;"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
                     </div>
                 </div>
 
-                <div class="detail-row">
-                    <div class="icon-box green"><i class="fa-solid fa-calendar"></i></div>
-                    <div class="detail-info">
-                        <span class="label">Member Since</span>
-                        <span class="value">February 5, 2026</span> </div>
-                </div>
-            </section>
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
+        </section>
 
-            <section class="card stats-summary-card">
-    <h3>Your statistics</h3>
-    <div class="detail-row">
-        <div class="icon-box blue"><i class="fa-solid fa-book"></i></div>
-        <div class="detail-info">
-            <span class="label">All Entries</span>
-            <span class="value"><?= $entryCount ?> entries</span>
-        </div>
+        <section class="card details-card">
+            <h3>Account Details</h3>
+            <div class="detail-row">
+                <div class="icon-box blue"><i class="fa-solid fa-envelope"></i></div>
+                <div class="detail-info">
+                    <span class="label">Email Address</span>
+                    <span class="value"><?= htmlspecialchars($user['email']) ?></span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="icon-box purple"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="detail-info">
+                    <span class="label">Role</span>
+                    <span class="value"><?= htmlspecialchars($user['role'] ?? 'User') ?></span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="icon-box green"><i class="fa-solid fa-calendar"></i></div>
+                <div class="detail-info">
+                    <span class="label">Member Since</span>
+                    <span class="value">February 5, 2026</span> 
+                </div>
+            </div>
+        </section>
+
+        <section class="card stats-summary-card">
+            <h3>Your statistics</h3>
+            <div class="detail-row">
+                <div class="icon-box blue"><i class="fa-solid fa-book"></i></div>
+                <div class="detail-info">
+                    <span class="label">All Entries</span>
+                    <span class="value"><?= $entryCount ?> entries</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card logout-card">
+            <div class="logout-text">
+                <h3>Sign Out</h3>
+                <p>You can sign back in anytime with your credentials</p>
+            </div>
+            <button onclick="location.href='/logout'" class="sign-out-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            </button>
+        </section>
+        
     </div>
-</section>
-            <section class="card logout-card">
-                <div class="logout-text">
-                    <h3>Sign Out</h3>
-                    <p>You can sign back in anytime with your credentials</p>
-                </div>
-                <button onclick="location.href='/logout'" class="sign-out-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
-                </button>
-            </section>
-        </div>
-    </main>
 </div>
 
 </body>

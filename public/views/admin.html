@@ -25,8 +25,9 @@
     </ul>
 </nav>
 
-<div class="container">
+<div class="admin-page-wrapper">
     <main class="admin-container">
+        
         <header class="welcome" style="text-align: center; margin-bottom: 40px;">
             <h1>Panel Administrator</h1>
             <p>Monitor system - LumiTrack</p>
@@ -76,9 +77,9 @@
             </div>
         </section>
 
-        <section class="user-management">
+        <section class="user-management card" style="padding: 25px; margin-bottom: 30px;">
             <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-users-gear"></i> User Management</h3>
-            <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">Manage users</p>
+            <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">Manage your community</p>
 
             <div class="user-list">
                 <?php if (isset($users) && is_array($users)): ?>
@@ -88,7 +89,7 @@
                             <div class="user-avatar"><?= strtoupper(substr($u['firstname'] ?? 'U', 0, 1)) ?></div>
                             <div class="user-details">
                                 <span class="user-email"><?= htmlspecialchars($u['email']) ?></span>
-                                <span class="user-joined">Imię: <?= htmlspecialchars($u['firstname'] ?? 'User') ?></span>
+                                <span class="user-joined">Name: <?= htmlspecialchars($u['firstname'] ?? 'User') ?></span>
                             </div>
                         </div>
                         <div class="user-actions">
@@ -100,25 +101,25 @@
                                 <?= $u['is_blocked'] ? 'Blocked' : 'Active' ?>
                             </span>
                             
-                            <?php if (isset($user) && $u['id'] != $user['id']): ?>
+                            <?php if (isset($_SESSION['user']) && $u['id'] != $_SESSION['user']['id']): ?>
                                 <button id="block-btn-<?= $u['id'] ?>" class="btn-block" onclick="toggleBlock(<?= $u['id'] ?>)">
                                     <?= $u['is_blocked'] ? 'Unblock' : 'Block' ?>
                                 </button>
                             <?php else: ?>
-                                <span style="font-size: 0.75rem; color: #94a3b8; margin-left: 10px;">(Ty)</span>
+                                <span style="font-size: 0.75rem; color: #94a3b8; margin-left: 10px;">(You)</span>
                             <?php endif; ?>
                         </div>
                     </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p style="text-align: center; padding: 20px;">No users</p>
+                    <p style="text-align: center; padding: 20px;">No users found</p>
                 <?php endif; ?>
             </div>
         </section>
 
-        <section class="user-management" style="margin-top: 40px;">
+        <section class="user-management card" style="padding: 25px; margin-bottom: 30px;">
             <h3><i class="fa-solid fa-list-ul"></i> System Activity Log</h3>
-            <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">Last entries of users</p>
+            <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 20px;">Last entries of users (from database view)</p>
             <div class="user-list">
                 <?php if(isset($logs) && is_array($logs) && count($logs) > 0): ?>
                     <?php foreach ($logs as $log): ?>
@@ -128,7 +129,7 @@
                                     <span class="user-email"><?= htmlspecialchars($log['firstname'] . ' ' . $log['lastname'] ) ?></span>
                                     <span class="user-joined">
                                         Mood: <strong><?= $log['mood'] ?></strong> | 
-                                        Energia: <strong><?= $log['energy'] ?></strong>
+                                        Energy: <strong><?= $log['energy'] ?></strong>
                                     </span>
                                 </div>
                             </div>
@@ -138,26 +139,27 @@
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p style="text-align: center; padding: 20px; color: #94a3b8;">No activieties</p>
+                    <p style="text-align: center; padding: 20px; color: #94a3b8;">No activities found</p>
                 <?php endif; ?>
             </div>
         </section>
 
-        <section class="system-info-card">
-            <h4>System Information</h4>
-            <div class="system-row">
-                <span>Nr of Admins:</span>
-                <span><?= $adminCount ?></span>
+        <section class="system-info-card card" style="padding: 25px;">
+            <h4 style="margin-bottom: 15px;">System Information</h4>
+            <div class="system-row" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
+                <span>Admins:</span>
+                <span style="font-weight: 600;"><?= $adminCount ?></span>
             </div>
-            <div class="system-row">
-                <span>Nr of Users:</span>
-                <span><?= $totalUsers - $adminCount ?></span>
+            <div class="system-row" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
+                <span>Regular Users:</span>
+                <span style="font-weight: 600;"><?= $totalUsers - $adminCount ?></span>
             </div>
-            <div class="system-row">
-                <span>Status System:</span>
-                <span style="color: #16a34a; font-weight: bold;">Operating</span>
+            <div class="system-row" style="display: flex; justify-content: space-between; padding: 10px 0;">
+                <span>System Status:</span>
+                <span style="color: #16a34a; font-weight: bold;">Operating Properly</span>
             </div>
         </section>
+
     </main>
 </div>
 

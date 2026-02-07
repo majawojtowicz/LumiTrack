@@ -1,10 +1,22 @@
 
 .admin-container {
-    max-width: 1700px;
-    margin: 40px auto;
-    padding: 20px;
+    width:100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
 }
 
+.admin-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+main.dashboard {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

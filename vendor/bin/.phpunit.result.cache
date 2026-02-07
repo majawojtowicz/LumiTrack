@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"EntryTest::testEnergyLevelsRange":0.203,"EntryTest::testTagsParsing":0.032,"EntryTest::testMoodMapping":0.009,"UserTest::testPasswordHashing":0.16,"UserTest::testUserObjectCreation":0.012,"UserTest::testRegistrationPasswordMatch":0.009}}
+{"version":1,"defects":[],"times":{"EntryTest::testEnergyLevelsRange":0.131,"EntryTest::testTagsParsing":0.022,"EntryTest::testMoodMapping":0.006,"UserTest::testPasswordHashing":0.115,"UserTest::testUserObjectCreation":0.009,"UserTest::testRegistrationPasswordMatch":0.006}}

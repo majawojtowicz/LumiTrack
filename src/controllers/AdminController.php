@@ -35,18 +35,18 @@ class AdminController extends AppController
 
     public function toggleBlock()
     
-    {       $this->requireAdmin();
+    {      
+        header('Content-type: application/json');
         if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'ADMIN') {
-            header('Content-type: application/json');
+            
             http_response_code(403);
             echo json_encode(['success' => false, 'message' => 'Unauthorized']);
             exit;
         }
 
         $id = $_GET['id'] ?? null;
-        if ($id) {
+        if (!$id) {
             return $this->renderError(400);
-        header('Content-type: application/json');
         echo json_encode(['success' => false, 'message' => 'Brak ID użytkownika']);
         return;
     }
@@ -55,11 +55,11 @@ class AdminController extends AppController
         $userRepository = new UserRepository();
         $newStatus = $userRepository->toggleUserBlock((int)$id);
         
-        header('Content-type: application/json');
+        
         echo json_encode(['success' => true, 'is_blocked' => $newStatus]);
     } catch (Exception $e) {
         http_response_code(500);
-        header('Content-type: application/json');
+        
         echo json_encode(['success' => false]);
     }
     }

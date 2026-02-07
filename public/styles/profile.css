@@ -1,10 +1,28 @@
+.profile-page-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 800px;
+}
+main.dashboard {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .profile-header-card {
     display: flex;
     align-items: center;
     gap: 25px;
     padding: 30px;
     margin-bottom: 25px;
-    
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .avatar-circle {
