@@ -8,6 +8,7 @@ class ProfileController extends AppController
     public function index()
     {
         if (!isset($_SESSION['user'])) {
+            $this->renderError(401);
             header('Location: /login');
             exit;
         }

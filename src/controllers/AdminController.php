@@ -45,7 +45,7 @@ class AdminController extends AppController
 
         $id = $_GET['id'] ?? null;
         if ($id) {
-            http_response_code(400);
+            return $this->renderError(400);
         header('Content-type: application/json');
         echo json_encode(['success' => false, 'message' => 'Brak ID użytkownika']);
         return;
