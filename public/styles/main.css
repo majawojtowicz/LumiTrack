@@ -3,6 +3,12 @@
     box-sizing: border-box;
 }
 
+.topbar {
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
@@ -33,7 +39,7 @@ nav a {
 }
 
 .container {
-    display: grid;
+    display: block;
     grid-template-columns: 400px 1fr;
     min-height: calc(100vh - 56px);
 }
@@ -78,7 +84,7 @@ main {
 
 
 .nav-links li.active a {
-    color: #fff !important; 
+    color: #5096b5 !important; 
     font-weight: 600;
 }
 

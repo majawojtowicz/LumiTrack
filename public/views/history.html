@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="public/styles/main.css">
     <link rel="stylesheet" href="public/styles/dashboard.css">
     <link rel="stylesheet" href="public/styles/history.css">
+    <link rel="stylesheet" href="public/styles/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>LumiTrack – History</title>
 </head>
@@ -17,14 +18,15 @@
         <span>LumiTrack</span>
     </div>
     <ul class="nav-links">
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li class="active"><a href="/history">History</a></li>
-        <li><a href="/statistics">Statistics</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <?php if (($user['role'] ?? '') === 'ADMIN'): ?>
-            <li><a href="/admin">Admin</a></li>
-        <?php endif; ?>
-    </ul>
+    <li><a href="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li class="active"><a href="/history"><i class="fa-solid fa-clock-rotate-left"></i> History</a></li>
+        <li><a href="/statistics"><i class="fa-solid fa-chart-line"></i> Statistics</a></li>
+        <li><a href="/profile"><i class="fa-solid fa-user"></i> Profile</a></li>
+    </li>
+    <?php if (($user['role'] ?? '') === 'ADMIN'): ?>
+    <li class="<?= $page === 'admin' ? 'active' : '' ?>"><a href="/admin"><i class="fa-solid fa-shield-halved"></i> Admin</a></li>
+    <?php endif; ?>
+</ul>
 </nav>
 
 <div class="container">
