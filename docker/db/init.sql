@@ -66,19 +66,16 @@ CREATE TABLE entry_tags (
         ON DELETE CASCADE
 );
 
-CREATE VIEW v_entries_with_users AS
-SELECT 
-    e.id AS entry_id,
-    e.content,
-    e.created_at,
-    u.email
+CREATE VIEW v_admin_activity_log AS
+SELECT u.firstname, u.lastname, e.energy, e.mood, e.note, e.created_at
 FROM entries e
-JOIN users u ON e.user_id = u.id;
+JOIN users u ON e.user_id = u.id
+ORDER BY e.created_at DESC;
 
 CREATE VIEW v_entries_with_tags AS
 SELECT
     e.id AS entry_id,
-    e.content,
+    e.note,
     t.name AS tag
 FROM entries e
 JOIN entry_tags et ON e.id = et.entry_id
@@ -122,3 +119,12 @@ INSERT INTO entries (user_id, content)
 VALUES (1, 'Transactional test entry');
 
 COMMIT;
+
+CREATE OR REPLACE VIEW v_entries_with_users AS
+SELECT 
+    e.id AS entry_id,
+    e.note,
+    e.created_at,
+    u.email
+FROM entries e
+JOIN users u ON e.user_id = u.id;

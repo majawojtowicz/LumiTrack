@@ -36,6 +36,10 @@ class Routing {
             "controller" => "ProfileController",
             "action" => "index"
         ],
+        "update-profile" => [
+        "controller" => "ProfileController",
+        "action" => "updateProfile"
+        ],
         "logout" => [
             "controller" => "ProfileController",
             "action" => "logout"

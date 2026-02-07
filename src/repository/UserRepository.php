@@ -4,6 +4,13 @@ require_once "Repository.php";
 
 class UserRepository extends Repository {
 
+    public function getEntryCount(int $userId): int 
+    {
+        $stmt = $this->database->connect()->prepare('SELECT count_user_entries(?)');
+        $stmt->execute([$userId]);
+        return (int)$stmt->fetchColumn();
+    }
+
     public function getUsers(): ?array
     {
         $query = $this->database->connect()->prepare("SELECT * FROM users ORDER BY id DESC");
@@ -48,4 +55,46 @@ class UserRepository extends Repository {
 
         return (bool)$newStatus;
     }
+
+    public function registerUserWithProfile($email, $password, $firstname, $lastname) {
+        $db = $this->database->connect();
+        $db->beginTransaction();
+
+        try {
+            $stmt = $db->prepare('
+                INSERT INTO users (email, password, firstname, lastname, role) 
+                VALUES (?, ?, ?, ?, ?) RETURNING id
+            ');
+            $stmt->execute([$email, $password, $firstname, $lastname, 'USER']);
+            $userId = $stmt->fetchColumn();
+
+            $stmt2 = $db->prepare('
+                INSERT INTO user_profiles (user_id, display_name) 
+                VALUES (?, ?)
+            ');
+            $stmt2->execute([$userId, $firstname]);
+
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollBack();
+            throw $e;
+        }
+}
+
+public function getUserProfile(int $userId) {
+    $stmt = $this->database->connect()->prepare('SELECT * FROM user_profiles WHERE user_id = ?');
+    $stmt->execute([$userId]);
+    $profile = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $profile ? $profile : null;
+}
+
+public function updateProfile(int $userId, string $displayName, string $bio) {
+    $stmt = $this->database->connect()->prepare('
+        INSERT INTO user_profiles (user_id, display_name, bio) 
+        VALUES (?, ?, ?) 
+        ON CONFLICT (user_id) DO UPDATE SET display_name = EXCLUDED.display_name, bio = EXCLUDED.bio
+    ');
+    $stmt->execute([$userId, $displayName, $bio]);
+}
 }

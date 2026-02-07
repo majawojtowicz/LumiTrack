@@ -54,6 +54,7 @@ class DashboardController extends AppController
     $mood   = $data['mood'] ?? null;
     $focus  = $data['focus'] ?? null;
     $note   = $data['note'] ?? null;
+    $tags   = $data['tags'] ?? [];
 
     if (!$energy || !$mood || !$focus) {
         http_response_code(400);
@@ -68,7 +69,8 @@ class DashboardController extends AppController
         $energy,
         $mood,
         $focus,
-        $note
+        $note,
+        $tags
     );
 
     http_response_code(200);

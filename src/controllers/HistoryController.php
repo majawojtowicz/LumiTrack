@@ -15,7 +15,7 @@ class HistoryController extends AppController
         }
 
         $repo = new EntryRepository();
-        $entries = $repo->findByUser($_SESSION['user']['id']);
+        $entries = $repo->getEntriesWithTags($_SESSION['user']['id']);
 
         return $this->render('history', [
             'entries' => $entries,

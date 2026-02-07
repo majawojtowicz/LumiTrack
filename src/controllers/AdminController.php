@@ -2,6 +2,7 @@
 
 require_once 'AppController.php';
 require_once __DIR__.'/../repository/UserRepository.php';
+require_once __DIR__.'/../repository/EntryRepository.php';
 
 class AdminController extends AppController
 {
@@ -13,11 +14,14 @@ class AdminController extends AppController
         }
 
         $userRepository = new UserRepository();
+        $entryRepository = new EntryRepository();
         $users = $userRepository->getUsers();
+        $logs = $entryRepository->getAllEntriesForAdmin();
 
         return $this->render('admin', [
             'users' => $users,
-            'user' => $_SESSION['user']
+            'user' => $_SESSION['user'],
+            'logs' => $logs
         ]);
     }
 

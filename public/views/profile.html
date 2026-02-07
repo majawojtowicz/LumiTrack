@@ -37,13 +37,36 @@
                     <?= strtoupper(substr($user['firstname'], 0, 1)) ?>
                 </div>
                 <div class="user-meta">
-                    <h2><?= htmlspecialchars($user['firstname'] ) ?></h2>
-                    <p><?= htmlspecialchars($user['email']) ?></p>
-                </div>
+    <h2><?= htmlspecialchars($profile['display_name'] ?? $user['firstname']) ?></h2>
+    <p><?= htmlspecialchars($profile['bio'] ?? 'Brak opisu profilu') ?></p>
+</div>
             </section>
 
             <section class="card details-card">
                 <h3>Account Details</h3>
+                <section class="card profile-details-card">
+    <h3>Account Settings</h3>
+    <form action="/update-profile" method="POST">
+        <div class="detail-row">
+            <div class="icon-box blue"><i class="fa-solid fa-user-tag"></i></div>
+            <div class="detail-info" style="width: 100%;">
+                <span class="label">Display Name</span>
+                <input type="text" name="display_name" class="note-box-input" 
+                       value="<?= htmlspecialchars($profile['display_name'] ?? $user['firstname']) ?>">
+            </div>
+        </div>
+
+        <div class="detail-row">
+            <div class="icon-box purple"><i class="fa-solid fa-pen"></i></div>
+            <div class="detail-info" style="width: 100%;">
+                <span class="label">Bio</span>
+                <textarea name="bio" class="note-box-input" placeholder="Tell us something about yourself..."><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="save-btn" style="margin-top: 20px;">Save Changes</button>
+    </form>
+</section>
                 
                 <div class="detail-row">
                     <div class="icon-box blue"><i class="fa-solid fa-envelope"></i></div>
@@ -69,6 +92,16 @@
                 </div>
             </section>
 
+            <section class="card stats-summary-card">
+    <h3>Your statistics</h3>
+    <div class="detail-row">
+        <div class="icon-box blue"><i class="fa-solid fa-book"></i></div>
+        <div class="detail-info">
+            <span class="label">All Entries</span>
+            <span class="value"><?= $entryCount ?> entries</span>
+        </div>
+    </div>
+</section>
             <section class="card logout-card">
                 <div class="logout-text">
                     <h3>Sign Out</h3>
