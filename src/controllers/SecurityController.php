@@ -12,66 +12,82 @@ class SecurityController extends AppController {
         $this->userRepository = new UserRepository();
     }
 
-    public function login(){
-
-        if(!$this->isPost()){
+    public function login() {
+        if (!$this->isPost()) {
             return $this->render("login");
         }
         
-        $username = $_POST["username"]??'';
-        $password = $_POST["password"]??'';
+        $email = $_POST["username"] ?? '';
+        $password = $_POST["password"] ?? '';
 
-        $user = $this->userRepository->getUserByEmail($username);
-
-
-        if(!$user){
-            return $this->render("login", ["messages" => ["Nie istnieje taki użytkownik!"]]);
+        if (empty($email) || empty($password)) {
+            return $this->render("login", ["messages" => ["Proszę podać email i hasło!"]]);
         }
 
-        if(!password_verify($password, $user['password'])){
-            return $this->render("login", ["messages" => ["Nieprawidłowy email lub hasło!"]]);
+        $user = $this->userRepository->getUserByEmail($email);
+
+        if (!$user) {
+            return $this->render("login", ["messages" => ["Nie istnieje użytkownik o tym adresie email!"]]);
         }
 
-        // TODO create user session, cookie itd.
+        if (isset($user['is_blocked']) && $user['is_blocked'] == 1) {
+            return $this->render("login", ["messages" => ["Twoje konto zostało zablokowane przez administratora!"]]);
+        }
+
+        if (!password_verify($password, $user['password'])) {
+            return $this->render("login", ["messages" => ["Nieprawidłowe hasło!"]]);
+        }
+
         $_SESSION['user'] = [
-        'id' => $user['id'],
-        'firstname' => $user['firstname'],
-        'email' => $user['email'],
-        'role' => $user['role'] ?? 'USER'
-    ];
+            'id' => $user['id'],
+            'firstname' => $user['firstname'],
+            'email' => $user['email'],
+            'role' => $user['role'] ?? 'USER'
+        ];
 
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/dashboard");
         exit;
     }
 
-    public function register(){
-
-        if(!$this->isPost()){
+    public function register() {
+        if (!$this->isPost()) {
             return $this->render("register");
         }
 
-        $username = $_POST["username"]??'';
-        $password = $_POST["password"]??'';
-        $firstname = $_POST["firstname"]??'';
-        $lastname = $_POST["lastname"]??'';
-        $password2 = $_POST["password2"]??'';
+        $email = $_POST["username"] ?? ''; 
+        $password = $_POST["password"] ?? '';
+        $password2 = $_POST["password2"] ?? '';
+        $firstname = $_POST["firstname"] ?? '';
+        $lastname = $_POST["lastname"] ?? '';
 
-
-        if(empty($username) || empty($password) || empty($firstname) || empty($lastname) || empty($password2)) {
-            return $this->render("register", ["messages" => ["Wypełnij wszystkie pola!"]]);
+        if (empty($email) || empty($password) || empty($firstname) || empty($lastname)) {
+            return $this->render("register", ["messages" => ["Wszystkie pola są wymagane!"]]);
         }
 
         if ($password !== $password2) {
             return $this->render("register", ["messages" => ["Hasła nie są identyczne!"]]);
         }
 
-        if ($this->userRepository->getUserByEmail($username) !== false) {
-            return $this->render("register", ["messages" => ["Użytkownik o podanym emailu już istnieje!"]]);
+        if ($this->userRepository->getUserByEmail($email)) {
+            return $this->render("register", ["messages" => ["Ten adres email jest już zajęty!"]]);
         }
 
-        $this->userRepository->createUser($firstname, $username, password_hash($password, PASSWORD_BCRYPT), $lastname);
+        try {
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+            
+            $this->userRepository->registerUserWithProfile(
+                $email, 
+                $hashedPassword, 
+                $firstname, 
+                $lastname
+            );
 
-        return $this->render("login",["messages"=>["Rejestracja przebiegła pomyślnie! Zaloguj się!"]]);
+            return $this->render("login", ["messages" => ["Rejestracja przebiegła pomyślnie! Teraz możesz się zalogować."]]);
+
+        } catch (Exception $e) {
+            error_log("Błąd rejestracji: " . $e->getMessage());
+            return $this->renderError(500);
+        }
     }
 }

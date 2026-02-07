@@ -165,9 +165,17 @@
 async function toggleBlock(id) {
     try {
         const response = await fetch(`/admin-toggle-block?id=${id}`);
+        
+        if (!response.ok) {
+            if (response.status === 403) alert("Nie masz uprawnień administratora!");
+            else if (response.status === 400) alert("Błędne zapytanie.");
+            else alert("Błąd serwera (500).");
+            return;
+        }
+
         const result = await response.json();
 
-        if (response.ok && result.success) {
+        if (result.success) {
             const btn = document.getElementById(`block-btn-${id}`);
             const badge = document.getElementById(`status-badge-${id}`);
             const blockedCounter = document.getElementById('blocked-count-val');
@@ -185,11 +193,10 @@ async function toggleBlock(id) {
                 badge.className = 'badge badge-active';
                 blockedCounter.textContent = Math.max(0, currentBlocked - 1);
             }
-        } else {
-            alert('Wystąpił błąd podczas zmiany statusu.');
         }
     } catch (e) {
-        console.error('Błąd:', e);
+        console.error('Błąd połączenia:', e);
+        alert('Problem z połączeniem z serwerem.');
     }
 }
 </script>

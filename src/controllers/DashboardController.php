@@ -44,9 +44,7 @@ class DashboardController extends AppController
     $data = json_decode(file_get_contents('php://input'), true);
 
     if (!$data) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Invalid JSON']);
-        return;
+        $this->renderError(400);
     }
 
     $userId = $_SESSION['user']['id'];

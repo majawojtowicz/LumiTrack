@@ -33,4 +33,16 @@ class AppController {
         }
     }
 
+    protected function renderError(int $code) {
+    http_response_code($code);
+    $path = "public/views/{$code}.html";
+    
+    if (file_exists($path)) {
+        include $path;
+    } else {
+        echo "Error {$code}";
+    }
+    exit;
+}
+
 }

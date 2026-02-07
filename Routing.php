@@ -55,10 +55,12 @@ class Routing {
     ];
 
     public static function run(string $path) {
+        try{
         $urlParts = explode("?", $path);
         $actionName = $urlParts[0];
 
         if (!array_key_exists($actionName, Routing::$routes)) {
+            http_response_code(404);
             include 'public/views/404.html';
             return;
         }
@@ -71,6 +73,11 @@ class Routing {
 
         if ($result !== null) {
             echo $result;
+        }
+        }catch (Throwable $e){
+            http_response_code(500);
+            include 'public/views/500.html';
+            exit;
         }
     }
 }

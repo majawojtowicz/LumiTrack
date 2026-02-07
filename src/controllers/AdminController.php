@@ -8,6 +8,14 @@ class AdminController extends AppController
 {
     public function index()
     {
+        if (!isset($_SESSION['user'])) {
+        $this->renderError(401);
+    }
+
+        if ($_SESSION['user']['role'] !== 'ADMIN') {
+        $this->renderError(403);
+    }
+
         if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'ADMIN') {
             header('Location: /dashboard');
             exit;
@@ -37,13 +45,22 @@ class AdminController extends AppController
 
         $id = $_GET['id'] ?? null;
         if ($id) {
-            $userRepository = new UserRepository();
-            $newStatus = $userRepository->toggleUserBlock((int)$id);
-            
-            header('Content-type: application/json');
-            echo json_encode(['success' => true, 'is_blocked' => $newStatus]);
-        } else {
             http_response_code(400);
-        }
+        header('Content-type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Brak ID użytkownika']);
+        return;
+    }
+
+    try {
+        $userRepository = new UserRepository();
+        $newStatus = $userRepository->toggleUserBlock((int)$id);
+        
+        header('Content-type: application/json');
+        echo json_encode(['success' => true, 'is_blocked' => $newStatus]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        header('Content-type: application/json');
+        echo json_encode(['success' => false]);
+    }
     }
 }
