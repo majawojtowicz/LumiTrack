@@ -21,7 +21,9 @@
         <li><a href="/history">History</a></li>
         <li><a href="/statistics">Statistics</a></li>
         <li class="active"><a href="/profile">Profile</a></li>
-        <li><a href="/admin">Admin</a></li>
+        <?php if (($user['role'] ?? '') === 'ADMIN'): ?>
+            <li><a href="/admin">Admin</a></li>
+        <?php endif; ?>
     </ul>
 </nav>
 
